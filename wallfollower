@@ -1,0 +1,61 @@
+#include <kipr/botball.h>
+int l_motor = 0;
+int r_motor = 3;
+int rspeed = 50; //rspeed of forward
+int lspeed = 35; //lspeed of forward
+int lturn = 800; //time for left turn
+int lmturn = 100; //motor of left during left turn
+int rmturn = -50; //motor of left during left turn
+int lmvr = 40; //left motor for veer right
+int rmvr = 30; //right motor for veer right
+int rmvl = 50; //right motor for veer left
+int lmvl = 20; //left motor for veer left
+int feye = 5; //front eye
+int seye = 0; //side eye
+int feyesense = 2100; //feye sense
+int seyelsense = 2700; //side eye sense for veer left
+int seyersense = 2900; //side eye sense for veer right
+int main()
+{
+  followwall();
+    if (analog(feye) > feyesense){
+      turnleft();
+    }    
+  followwall();
+   
+}
+//FUNCTIONS
+
+void followwall(){
+    while (analog(feye) < feyesense){
+  forward ();
+    if (analog(seye) <= seyelsense){
+      left ();
+    }
+    if (analog(seye) >= seyersense){
+      right ();
+    }
+    }
+}
+
+void forward(){
+   motor(l_motor, lspeed);
+   motor(r_motor, rspeed); // go forward  
+}
+
+void left(){
+  motor(r_motor, rmvl);
+  motor(l_motor, lmvl);
+ 
+}
+void right(){
+  motor(l_motor, lmvr);
+  motor(r_motor, rmvr);
+ 
+}
+  void turnleft(){
+    motor(l_motor, lmturn);
+    motor(r_motor, rmturn);
+    msleep(lturn);
+    ao();
+  }
